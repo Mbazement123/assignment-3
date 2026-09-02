@@ -20,7 +20,7 @@ run_test() {
     local expected_exit=$4
     
     ((test_count++))
-    ech0 ""
+    echo ""
     echo "Test $test_num: $test_name"
     echo "  Command: $cmd"
     
@@ -29,8 +29,8 @@ run_test() {
     exit_code=0
     output=$(bash -c "$cmd" 2>&1) || exit_code=$?
     
-    isf [[ $exit_code -eq $expected_exit ]]; then
-        ech0 -e "  Result: ${GREEN}PASSED${NC} (exit code: $exit_code)"
+    if [[ $exit_code -eq $expected_exit ]]; then
+        echo -e "  Result: ${GREEN}PASSED${NC} (exit code: $exit_code)"
         ((passed++))
     else
         echo -e "  Result: ${RED}FAILED${NC} (exit code: $exit_code, expected: $expected_exit)"

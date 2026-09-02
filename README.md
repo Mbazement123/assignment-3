@@ -110,6 +110,20 @@ validate -> test -> docker
 2. `test` runs `tests/test.sh` after validation succeeds.
 3. `docker` runs `scripts/build.sh` after the tests succeed.
 
+## Failure Demonstration and Fix
+
+An earlier GitHub Actions run demonstrated an environment-dependent test failure in Test 12:
+
+```text
+Test 12: check-port with localhost and valid port
+Command: ./app/app.sh check-port 127.0.0.1 22
+Result: FAILED (exit code: 0, expected: 1)
+```
+
+The test expected port `22` to be closed, but the CI runner had an SSH service listening on that port. The application correctly returned exit code `0` because the port was reachable; the test assumption was incorrect. The failure can be viewed in the [GitHub Actions run](https://github.com/Mbazement123/assignment-3/actions/runs/33632640083/job/100255668462?pr=1#step:3:33).
+
+Test 12 was corrected to start at a high local port and find an unused port before checking it. This keeps the test focused on the expected connection failure without depending on whether a particular service is installed or running in the environment.
+
 ## Docker Image
 
 The `Dockerfile` uses Alpine Linux and installs Bash plus the networking tools required by the application. The image entrypoint is `/app/app/app.sh`, and its default command is `help`.
