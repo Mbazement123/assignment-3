@@ -1,0 +1,56 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# GitHub
+.github
+.github/workflows
+
+# Logs
+logs
+*.log
+
+# Temporary files
+.tmp
+tmp
+*.tmp
+
+# Test and development
+.pytest_cache
+*.pyc
+__pycache__
+
+# Tests and testing artifacts
+tests/
+test.sh
+*.test.sh
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Grading scripts
+grade.sh
+grading/
+
+# Documentation
+README.md
+*.md
+
+# Node modules (if any)
+node_modules/
+
+# Python virtual environments
+venv/
+.env
