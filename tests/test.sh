@@ -40,7 +40,7 @@ run_test() {
     # Print output if non-empty and it's a helpful command
     if [[ -n "$output" ]] && [[ $exit_code -ne 0 || "$test_name" =~ "help" || "$test_name" =~ "system" ]]; then
         echo "  Output:"
-        echo "$output" | sed 's/^/    /'
+        printf '%s\n' "$output" | sed 's/^/    /'
     fi
 }
 
