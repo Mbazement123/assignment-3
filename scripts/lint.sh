@@ -36,14 +36,14 @@ echo ""
 echo "Checking bash syntax on all .sh files..."
 
 # Find and check all .sh files
-for sh_file in $(find . -name "*.sh" -type f 2>/dev/null); do
+while IFS= read -r -d '' sh_file; do
     if bash -n "$sh_file" 2>&1; then
         echo "✓ $sh_file"
     else
         echo "✗ $sh_file (SYNTAX ERROR)"
         ((errors++))
     fi
-done
+done < <(find . -name "*.sh" -type f -print0 2>/dev/null)
 
 echo ""
 
@@ -51,11 +51,11 @@ echo ""
 if command -v shellcheck &> /dev/null; then
     echo "Running shellcheck..."
     shellcheck_errors=0
-    for sh_file in $(find . -name "*.sh" -type f 2>/dev/null); do
+    while IFS= read -r -d '' sh_file; do
         if ! shellcheck "$sh_file" 2>&1; then
             ((shellcheck_errors++))
         fi
-    done
+    done < <(find . -name "*.sh" -type f -print0 2>/dev/null)
     
     if [[ $shellcheck_errors -eq 0 ]]; then
         echo "✓ No shellcheck issues found"

@@ -40,7 +40,7 @@ run_test() {
     # Print output if non-empty and it's a helpful command
     if [[ -n "$output" ]] && [[ $exit_code -ne 0 || "$test_name" =~ "help" || "$test_name" =~ "system" ]]; then
         echo "  Output:"
-        echo "$output" | sed 's/^/    /'
+        printf '%s\n' "$output" | sed 's/^/    /'
     fi
 }
 
@@ -83,8 +83,12 @@ run_test 10 "no command provided returns exit code 2" "$APP" 2
 # Test 11 (bonus): check-host with missing argument flag style
 run_test 11 "check-host with IP but connection test" "$APP check-host 127.0.0.1" 0
 
-# Test 12 (bonus): check-port with valid port on localhost
-run_test 12 "check-port with localhost and valid port" "$APP check-port 127.0.0.1 22" 1
+# Test 12 (bonus): check-port with an unused local port
+unused_port=49152
+while timeout 1 bash -c "</dev/tcp/127.0.0.1/$unused_port" 2>/dev/null; do
+    ((unused_port++))
+done
+run_test 12 "check-port with an unused localhost port" "$APP check-port 127.0.0.1 $unused_port" 1
 
 echo ""
 echo "=== Test Summary ==="
